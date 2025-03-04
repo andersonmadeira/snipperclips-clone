@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnwfolcjqfrm1"]
+
+[ext_resource type="Script" uid="uid://dbce4dhmjeffc" path="res://scripts/game.gd" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://cg64k1veur53m" path="res://scenes/character.tscn" id="2_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://ceto8s7kdntu3" path="res://square.png" id="2_sugp2"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jyhfs"]
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("characters")]
+script = ExtResource("1_sugp2")
+characters = [NodePath("Character1"), NodePath("Character2")]
+
+[node name="Character1" parent="." instance=ExtResource("2_jyhfs")]
+position = Vector2(319, 289)
+
+[node name="CharacterSprite" parent="Character1" index="1"]
+modulate = Color(0.972549, 0.737255, 0.00784314, 1)
+
+[node name="Character2" parent="." instance=ExtResource("2_jyhfs")]
+position = Vector2(843, 289)
+
+[node name="CharacterSprite" parent="Character2" index="1"]
+modulate = Color(0.929412, 0.25098, 0.411765, 1)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(552, 618)
+collision_layer = 4
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("WorldBoundaryShape2D_jyhfs")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+position = Vector2(0, 14.75)
+scale = Vector2(1200, 31.497)
+texture = ExtResource("2_sugp2")
+
+[editable path="Character1"]
+[editable path="Character2"]
