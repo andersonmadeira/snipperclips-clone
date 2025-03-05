@@ -1,27 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://cg64k1veur53m"]
+[gd_scene load_steps=2 format=3 uid="uid://cg64k1veur53m"]
 
 [ext_resource type="Script" uid="uid://coidda6jj4frs" path="res://scripts/character.gd" id="1_rkhd4"]
-[ext_resource type="Texture2D" uid="uid://devoo1uvu3amu" path="res://player.png" id="2_lrhn5"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
-size = Vector2(126, 4)
 
 [node name="Character" type="CharacterBody2D"]
-collision_mask = 6
+collision_mask = 7
 script = ExtResource("1_rkhd4")
 metadata/_edit_group_ = true
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-63, -91, -63, 37, -59, 52, -50, 67, -39, 78, -23, 87, -10, 90, 0, 90, 10, 90, 23, 87, 39, 78, 50, 67, 59, 52, 63, 37, 63, -91)
+uv = PackedVector2Array(-63, -91, -63, 37, -59, 52, -50, 67, -39, 78, -23, 87, -10, 90, 0, 90, 10, 90, 23, 87, 39, 78, 50, 67, 59, 52, 63, 37, 63, -91)
 
-[node name="CharacterSprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_lrhn5")
-
-[node name="CharacterHead" type="StaticBody2D" parent="."]
-position = Vector2(0, -89)
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterHead"]
-shape = SubResource("RectangleShape2D_g2els")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 one_way_collision = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+
+[node name="Line2D" type="Line2D" parent="."]
+closed = true
+default_color = Color(1, 1, 0, 1)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

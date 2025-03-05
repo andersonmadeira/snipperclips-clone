@@ -10,18 +10,6 @@
 script = ExtResource("1_sugp2")
 characters = [NodePath("Character1"), NodePath("Character2")]
 
-[node name="Character1" parent="." instance=ExtResource("2_jyhfs")]
-position = Vector2(319, 289)
-
-[node name="CharacterSprite" parent="Character1" index="1"]
-modulate = Color(0.972549, 0.737255, 0.00784314, 1)
-
-[node name="Character2" parent="." instance=ExtResource("2_jyhfs")]
-position = Vector2(843, 289)
-
-[node name="CharacterSprite" parent="Character2" index="1"]
-modulate = Color(0.929412, 0.25098, 0.411765, 1)
-
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(552, 618)
 collision_layer = 4
@@ -35,6 +23,20 @@ shape = SubResource("WorldBoundaryShape2D_jyhfs")
 position = Vector2(0, 14.75)
 scale = Vector2(1200, 31.497)
 texture = ExtResource("2_sugp2")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="Character1" parent="." instance=ExtResource("2_jyhfs")]
+position = Vector2(375, 332)
+
+[node name="Polygon2D" parent="Character1" index="0"]
+color = Color(0.972549, 0.737255, 0.00784314, 1)
+
+[node name="Character2" parent="." instance=ExtResource("2_jyhfs")]
+position = Vector2(681, 331)
+
+[node name="Polygon2D" parent="Character2" index="0"]
+color = Color(0.929412, 0.25098, 0.411765, 1)
 
 [editable path="Character1"]
 [editable path="Character2"]
