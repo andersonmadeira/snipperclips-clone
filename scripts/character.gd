@@ -15,7 +15,6 @@ var _in_contact: Dictionary[int, Character] = {}
 func _ready() -> void:
 	collision_polygon.polygon = polygon.polygon
 	area_collision_polygon.polygon = polygon.polygon
-	collision_polygon.one_way_collision = true
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -44,32 +43,6 @@ func _cut() -> void:
 			char._perform_cut(polygon)
 
 func _perform_cut(poly: Polygon2D) -> void:
-	# 1st attempt
-	#var offset_poly = Polygon2D.new()
-	#offset_poly.global_position = Vector2.ZERO
-	#var new_values = []
-	#for point in poly.polygon:
-		#new_values.append(point + poly.global_position)
-	#
-	#var res = Geometry2D.clip_polygons(new_values, polygon.polygon)
-	#
-	#print(res)
-	
-	# 2nd attempt
-	#var offset_poly = Transform2D(0, poly.global_position) * poly.polygon
-	#var res = Geometry2D.clip_polygons(offset_poly, polygon.polygon)
-	#
-	#if res.size() > 0:
-		#var res2 = Transform2D(0, -poly.global_position) * res[0]
-		#polygon.set_deferred('polygon', res2)
-		##polygon.transform
-		#print(res2)
-	#else:
-		#print('Failed!')
-	#area_collision_polygon.set_deferred('polygon', res[0])
-	#collision_polygon.set_deferred('polygon', res[0])
-	
-	# 3rd attempt - KINDA WORKS
 	var offset_poly = Polygon2D.new()
 	var points = []
 	for p in poly.polygon:
@@ -86,7 +59,10 @@ func _perform_cut(poly: Polygon2D) -> void:
 		for p in res[0]:
 			points3.append(p - polygon.global_position)
 		
-		$Line2D.points = points3
+		#$Line2D.points = points3
+		area_collision_polygon.set_deferred('polygon', points3)
+		collision_polygon.set_deferred('polygon', points3)
+		polygon.set_deferred("polygon", points3)
 	
 	print(res)
 	

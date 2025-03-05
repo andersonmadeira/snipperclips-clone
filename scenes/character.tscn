@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://coidda6jj4frs" path="res://scripts/character.gd" id="1_rkhd4"]
 
 [node name="Character" type="CharacterBody2D"]
-collision_mask = 7
+collision_mask = 6
 script = ExtResource("1_rkhd4")
 metadata/_edit_group_ = true
 
@@ -12,7 +12,7 @@ polygon = PackedVector2Array(-63, -91, -63, 37, -59, 52, -50, 67, -39, 78, -23, 
 uv = PackedVector2Array(-63, -91, -63, 37, -59, 52, -50, 67, -39, 78, -23, 87, -10, 90, 0, 90, 10, 90, 23, 87, 39, 78, 50, 67, 59, 52, 63, 37, 63, -91)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-one_way_collision = true
+visible = false
 
 [node name="Area2D" type="Area2D" parent="."]
 
