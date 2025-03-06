@@ -39,54 +39,43 @@ func _jump() -> void:
 		
 func _cut() -> void:
 	if _in_contact.size() > 0:
-		for char in _in_contact.values():
-			char._perform_cut(polygon)
+		for c in _in_contact.values():
+			c._perform_cut(polygon, rotation)
 
-func _perform_cut(poly: Polygon2D) -> void:
-	var offset_poly = Polygon2D.new()
-	var points = []
-	for p in poly.polygon:
-		points.append(p + poly.global_position)
-		
-	var points2 = []
-	for p in polygon.polygon:
-		points2.append(p + polygon.global_position)
+func _perform_cut(poly: Polygon2D, rot: float) -> void:
+	var t1 = Transform2D(rot, poly.global_position)
+	var clipping_points = t1 * poly.polygon
+	var t2 = Transform2D(rotation, polygon.global_position)
+	var target_points = t2 * polygon.polygon
 	
-	var res = Geometry2D.clip_polygons(points2, points)
+	var res = Geometry2D.clip_polygons(target_points, clipping_points)
+
+	# TODO: If the final object is too small, it should automatically revert back to initial shape
+	# TODO: The smaller objects should be transformed into rigidbodies and fall to the ground and slowly fade out	
+	# TODO: The biggest of them should be the CharacterBody3D
+	if res.size() > 1:
+		push_warning("Clip polygons operation resulted in more %d objects, only 1 will be used!" % [res.size()])
 	
 	if res.size() > 0:
-		var points3 = []
-		for p in res[0]:
-			points3.append(p - polygon.global_position)
+		var result_points = []
+		for raw_point in res[0]:
+			var point = \
+				(raw_point - polygon.global_position).rotated(-rotation)
+			result_points.append(point)
 		
-		#$Line2D.points = points3
-		area_collision_polygon.set_deferred('polygon', points3)
-		collision_polygon.set_deferred('polygon', points3)
-		polygon.set_deferred("polygon", points3)
-	
-	print(res)
-	
-
-#func _perform_cut(points: PackedVector2Array, global_pos: Vector2) -> void:
-	#var offset_points = Transform2D(0, global_pos) * points
-	#var res = Geometry2D.exclude_polygons(polygon.polygon, points)
-	#
-	#print(res)
-	#
-	#collision_polygon.set_deferred("polygon", res[0])
-	#polygon.set_deferred("polygon", res[0])
-	#area_collision_polygon.set_deferred("polygon", res[0])
+		area_collision_polygon.set_deferred('polygon', result_points)
+		collision_polygon.set_deferred('polygon', result_points)
+		polygon.set_deferred("polygon", result_points)
+		polygon.rotation -= polygon.rotation
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	var id = body.get_instance_id()
 	
 	if body is Character and id != get_instance_id():
 		_in_contact[id] = body
-		print(_in_contact)
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	var id = body.get_instance_id()
 	
 	if body is Character and _in_contact.has(id):
 		_in_contact.erase(id)
-		print(_in_contact)

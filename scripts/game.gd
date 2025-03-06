@@ -5,7 +5,7 @@ class_name Game
 # TODO: Make the intersection area change color
 # TODO: Implement cut action
 # TODO: Implement revert action
-# TODO: Implement feet of the characters (specially useful when on top of the other char just so it doesn't fall down)
+# TODO: Implement feet of the characters (specially useful when on top of the other char just so it doesn't fall down) AND also when the object cut is irregular, the player won't be able to walk
 
 # ADDITIONAL:
 # TODO: Implement raise and crouch actions: When the player switches, the last position should remain
@@ -27,7 +27,7 @@ var _character: Character
 func _ready() -> void:
 	_character = characters[_character_index]
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("rotate_left"):
 		_character._rotate(-1)
 	if Input.is_action_pressed("rotate_right"):
